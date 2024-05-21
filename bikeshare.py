@@ -77,11 +77,18 @@ def load_data(city, month, day):
 def display_raw_data(df):
     """Displays raw data upon request by the user in increments of 5 rows."""
     row_index = 0
-    view_data = input("\nWould you like to view 5 rows of individual trip data? Enter yes or no.\n").lower()
-    while view_data == 'yes' and row_index + 5 <= len(df):
-        print(df.iloc[row_index:row_index+5])
-        row_index += 5
-        view_data = input("\nWould you like to view 5 more rows of individual trip data? Enter yes or no.\n").lower()
+    while True:
+        view_data = input("\nWould you like to view 5 rowas of individual trip data? Enter yes or no.\n").lower()
+        if view_data == 'yes':
+            if row_index + 5 <= len(df):
+                print(df.iloc[row_index:row_index + 5])
+                row_index += 5
+            else:
+                print(df.iloc[row.index:])
+                print("\nNo more data to display.")
+                break
+        else:
+            break
 
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
