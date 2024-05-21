@@ -79,11 +79,18 @@ def load_data(city, month, day):
 def display_raw_data(df):
     """Displays raw data upon request by the user in increments of 5 rows."""
     row_index = 0
-    view_data = input("\nWould you like to view 5 rows of individual trip data? Enter yes or no.\n").lower()
-    while view_data == 'yes' and row_index + 5 <= len(df):
-        print(df.iloc[row_index:row_index+5])
-        row_index += 5
-        view_data = input("\nWould you like to view 5 more rows of individual trip data? Enter yes or no.\n").lower()
+    while True:
+        view_data = input("\nWould you like to view 5 rowas of individual trip data? Enter yes or no.\n").lower()
+        if view_data == 'yes':
+            if row_index + 5 <= len(df):
+                print(df.iloc[row_index:row_index + 5])
+                row_index += 5
+            else:
+                print(df.iloc[row.index:])
+                print("\nNo more data to display.")
+                break
+        else:
+            break
 
 def time_stats(df):
     """Displays statistics on the most frequent times of travel."""
@@ -178,15 +185,33 @@ def main():
         city, month, day = get_filters()
         df = load_data(city, month, day)
 
-        display_raw_data(df)
-        time_stats(df)
-        station_stats(df)
-        trip_duration_stats(df)
-        user_stats(df)
+        display_analysis(df)
 
-        restart = input('\nWould you like to restart? Enter yes or no.\n')
-        if restart.lower() != 'yes':
+        if not ask_restart():
             break
+
+def display_analysis(df):
+    """
+    Displays the analysis of the bikeshare data.
+    
+    Args:
+        df - pandas DataFrame containing city data filtered by month and day
+    """
+    display_raw_data(df)
+    time_stats(df)
+    station_stats(df)
+    trip_duration_stats(df)
+    user_stats(df)
+
+def ask_restart():
+    """
+    Asks the user if they want to restart the analysis.
+    
+    Returns:
+        (bool) True if the user wants to restart, False otherwise
+    """
+    restart = input('\nWould you like to restart? Enter yes or no.\n')
+    return restart.lower() == 'yes'
 
 if __name__ == "__main__":
     main()
