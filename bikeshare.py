@@ -176,15 +176,33 @@ def main():
         city, month, day = get_filters()
         df = load_data(city, month, day)
 
-        display_raw_data(df)
-        time_stats(df)
-        station_stats(df)
-        trip_duration_stats(df)
-        user_stats(df)
+        display_analysis(df)
 
-        restart = input('\nWould you like to restart? Enter yes or no.\n')
-        if restart.lower() != 'yes':
+        if not ask_restart():
             break
+
+def display_analysis(df):
+    """
+    Displays the analysis of the bikeshare data.
+    
+    Args:
+        df - pandas DataFrame containing city data filtered by month and day
+    """
+    display_raw_data(df)
+    time_stats(df)
+    station_stats(df)
+    trip_duration_stats(df)
+    user_stats(df)
+
+def ask_restart():
+    """
+    Asks the user if they want to restart the analysis.
+    
+    Returns:
+        (bool) True if the user wants to restart, False otherwise
+    """
+    restart = input('\nWould you like to restart? Enter yes or no.\n')
+    return restart.lower() == 'yes'
 
 if __name__ == "__main__":
     main()
